@@ -1,0 +1,13 @@
+{
+  "name": "missing-person-portal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Full-stack missing-person age progression portal",
+  "scripts": {
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build:frontend": "npm --prefix frontend run build",
+    "start:frontend": "npm --prefix frontend run start",
+    "dev:backend": "python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000 --app-dir backend",
+    "run:backend": "python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --app-dir backend"
+  }
+}
