@@ -1,6 +1,5 @@
 <p align="center">
   <img src="images/preview_image.png" width="600" alt="Portal Preview">
-  # Missing Person Portal
 </p>
 
 # Missing Person Portal
