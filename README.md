@@ -66,6 +66,48 @@ You can also override the asset location with `LATS_ASSET_ROOT`.
 - frontend focuses on direct image-driven progression rather than picking a target age band from missing-person metadata
 - backend dependency list now includes the model runtime packages that were previously missing
 
+## LATS Model Architecture
+
+```text
+Input Face
+   ↓
+Identity Encoder : Extracts identity (latent identity features) using encoder
+   ↓
+Latent Feature Space : z=[identity features]
+   ↓
+Age Transformation Module : This is where target age is injected. The model uses fixed anchor age classes: 0-70
+(Ensures continuous traversal in latent space)
+   ↓
+Decoder / Generator : Outputs probability.
+   ↓
+Aged Face Output
+```
+### Loss functions
+
+1) GAN Loss: Ensures the generated face looks realistic and indistinguishable from a real face.
+
+$$
+L_{GAN}
+$$
+
+2) Identity Loss : This is the most critical loss for viva because it preserves the same person’s identity across age transformation.
+$$
+L_{id} = \left\| E(x) - E(G(x,a)) \right\|_2
+$$
+
+3) Cycle Loss: This ensures reversibility of age transformation.For example:child → adult → child
+The output should reconstruct the original image.
+
+$$
+L_{cycle} = \left\| x - G(G(x,a_1),a_0) \right\|_1
+$$
+
+4) Self Reconstruction Loss: If the target age is the same as the source age, the image should reconstruct itself.
+
+$$
+L_{rec} = \left\| x - G(x,a) \right\|_1
+$$
+
 ## Requirements
 
 - Python 3.11 recommended
