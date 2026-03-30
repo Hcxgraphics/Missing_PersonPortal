@@ -112,6 +112,22 @@ $$
 L_{rec} = \left\| x - G(x,a) \right\|_1
 $$
 
+### Model Results
+<table>
+  <tr>
+    <td align="center">
+      <img src="testData/Justin_kid.jpg" width="300" alt="Input Photo">
+      <br>
+      <b>Input Photo</b>
+    </td>
+    <td align="center">
+      <img src="images/Justin_kid.gif" width="300" alt="Input Photo">
+      <br>
+      <b>Face Aging Transition</b>
+    </td>
+  </tr>
+</table>
+
 ## Requirements
 
 - Python 3.11 recommended
