@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="images/preview_image.png" width="600" alt="Portal Preview">
+  <img src="images/preview_image.png" width="600" alt="header">
 </p>
 
 # Missing Person Portal
@@ -35,6 +35,10 @@ missing-person-portal/
 - generated full progression strip output
 - sample test images for quick smoke testing
 - repo-level scripts and ignore rules for cleaner GitHub usage
+
+<p align="left">
+  <img src="images/portal_ui.png" width="600" alt="Portal Preview">
+</p>
 
 ## Attribution
 
