@@ -44,7 +44,12 @@ def test(opt):
         for image_path in opt.image_path_list:
             print(image_path)
             data = dataset.dataset.get_item_from_path(image_path)
-            visuals = model.inference(data)
+            # Use FP16 mixed precision for faster inference on RTX GPUs
+            if torch.cuda.is_available():
+                with torch.cuda.amp.autocast():
+                    visuals = model.inference(data)
+            else:
+                visuals = model.inference(data)
             if opt.traverse and opt.make_video:
                 out_path = os.path.join(output_dir, os.path.splitext(os.path.basename(image_path))[0] + '.mp4')
                 visualizer.make_video(visuals, out_path)
@@ -67,7 +72,12 @@ def test(opt):
             if i >= opt.how_many:
                 break
 
-            visuals = model.inference(data)
+            # Use FP16 mixed precision for faster inference on RTX GPUs
+            if torch.cuda.is_available():
+                with torch.cuda.amp.autocast():
+                    visuals = model.inference(data)
+            else:
+                visuals = model.inference(data)
             img_path = data['Paths']
             rem_ind = []
             for i, path in enumerate(img_path):

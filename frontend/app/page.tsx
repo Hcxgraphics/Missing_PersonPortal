@@ -277,7 +277,7 @@ export default function HomePage() {
               ) : (
                 <div className="empty-state">
                   <h3>Progression GIF will appear here</h3>
-                  <p>Use one of the sample images from `testData` or upload a clean portrait to generate the full age trail.</p>
+                  <p>Upload a clean portrait to generate the full age trail of the missing person.</p>
                 </div>
               )}
             </article>

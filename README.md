@@ -1,3 +1,4 @@
+![header](images\preview_image.png)
 # Missing Person Portal
 
 A full-stack missing-person age-progression demo built with Next.js and FastAPI on top of a GAN-based face-aging runtime.

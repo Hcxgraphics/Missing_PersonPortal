@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import base64
+import hashlib
 import importlib.util
 import io
 import os
@@ -42,8 +43,18 @@ class ModelInferenceService:
         self.portal_checkpoint_root = backend_root / "model_runtime" / "checkpoints"
         self.generated_dir = backend_root / "app" / "static" / "generated"
         self.uploads_dir = backend_root / "app" / "uploads"
+        self.cache_dir = backend_root / "app" / "cache"
         self.generated_dir.mkdir(parents=True, exist_ok=True)
         self.uploads_dir.mkdir(parents=True, exist_ok=True)
+        self.cache_dir.mkdir(parents=True, exist_ok=True)
+
+    def _compute_image_hash(self, image_bytes: bytes) -> str:
+        """Compute SHA256 hash of image bytes for caching."""
+        return hashlib.sha256(image_bytes).hexdigest()
+
+    def _get_cached_image_path(self, image_hash: str, suffix: str = "aligned") -> Path:
+        """Get the cache path for a preprocessed image."""
+        return self.cache_dir / f"{suffix}_{image_hash}.png"
 
     def _checkpoint_roots(self) -> List[Path]:
         roots = [
@@ -250,8 +261,23 @@ class ModelInferenceService:
     ) -> InferenceResult:
         request_id = uuid.uuid4().hex
         safe_name = Path(original_filename).stem.replace(" ", "_")
-        input_name = f"{safe_name}_{request_id}.png"
-        input_path = self.uploads_dir / input_name
+        
+        # Compute hash for caching
+        image_hash = self._compute_image_hash(image_bytes)
+        cached_input_path = self._get_cached_image_path(image_hash, suffix="input")
+        
+        # Check if we've already processed this exact image
+        if cached_input_path.exists():
+            input_path = cached_input_path
+        else:
+            # Save new input image
+            input_name = f"{safe_name}_{request_id}.png"
+            input_path = self.uploads_dir / input_name
+            with Image.open(io.BytesIO(image_bytes)) as img:
+                img.convert("RGB").save(input_path)
+            # Also cache it for future requests
+            with Image.open(io.BytesIO(image_bytes)) as img:
+                img.convert("RGB").save(cached_input_path)
 
         checkpoint_dir = self._checkpoint_dir_for_model(model_name)
         if checkpoint_dir is None:
@@ -265,9 +291,6 @@ class ModelInferenceService:
             raise FileNotFoundError(
                 f"Upstream model folder is missing: {self.model_root}"
             )
-
-        with Image.open(io.BytesIO(image_bytes)) as img:
-            img.convert("RGB").save(input_path)
 
         use_in_the_wild = self._supports_in_the_wild()
 
