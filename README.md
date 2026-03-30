@@ -80,7 +80,7 @@ Identity Encoder : Extracts identity (latent identity features) using encoder
 Latent Feature Space : z=[identity features]
    ↓
 Age Transformation Module : This is where target age is injected. The model uses fixed anchor age classes: 0-70
-(Ensures continuous traversal in latent space)
+Shows continuous aging through anchor-based latent interpolation.
    ↓
 Decoder / Generator : Outputs probability.
    ↓
