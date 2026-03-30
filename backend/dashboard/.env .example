@@ -1,0 +1,4 @@
+PORT=4100
+FRONTEND_ORIGIN=http://localhost:3000
+CACHE_TTL_MS=7000
+MONGODB_URI=your_mongodb_atlas_uri
