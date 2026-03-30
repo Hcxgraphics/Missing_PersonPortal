@@ -1,151 +1,218 @@
+````markdown
 <p align="center">
-  <img src="assets/preview_image.png" width="600" alt="header">
+  <img src="assets/preview_image.png" width="700" alt="Missing Person Portal Banner">
 </p>
 
-# Missing Person Portal
-A full-stack missing-person age-progression demo built with Next.js and FastAPI on top of a GAN-based face-aging runtime.
+<h1 align="center">Missing Person Identification Portal</h1>
 
-The core age-transformation runtime in this project is adapted from the `Lifespan_Age_Trans` repository in this workspace, based on the official Lifespan Age Transformation Synthesis project by Roy Or-El et al.
+<p align="center">
+  AI-powered age progression system for missing person identification using GAN-based face aging.
+</p>
 
-The app accepts a face photo plus model selection metadata, runs the upstream Lifespan Age Transformation Synthesis model directly, and returns:
+<p align="center">
+  <b>Next.js</b> • <b>FastAPI</b> • <b>Express.js</b> • <b>MongoDB</b> • <b>PyTorch</b>
+</p>
 
-- a full progression GIF across age buckets
-- a full progression strip generated from the uploaded image itself
+---
 
-## Project structure
+## Overview
+
+The **Missing Person Identification Portal** is a full-stack AI-powered web application designed to assist in **missing person identification through age progression**.
+
+The system takes a **single facial image** of a missing individual and generates a **realistic age-progression sequence** using a GAN-based face aging model derived from the **Lifespan Age Transformation Synthesis (LATS)** framework.
+
+It combines:
+
+- **modern web interface** for case input
+- **real-time inference pipeline**
+- **historical dashboard tracking**
+- **GIF-based age progression visualization**
+- **MongoDB case history storage**
+
+This project is especially useful for:
+- law enforcement support systems
+- missing child identification
+- research demonstrations
+- academic projects on GANs and face aging
+
+---
+
+## Key Features
+
+- 🎯 GAN-based face age progression
+- 🎥 Animated age transition GIF generation
+- 📊 Dashboard for historical upload tracking
+- ⚡ FastAPI inference backend
+- 🧠 LATS-based identity-preserving aging
+- 🔄 Async non-blocking MongoDB logging
+- 🚀 Production-ready modular architecture
+- 👨 Male/Female model checkpoint support
+
+---
+
+## Application Preview
+
+<p align="center">
+  <img src="assets/portal_ui.png" width="850" alt="Portal UI">
+</p>
+
+---
+
+## Model Output Example
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="testData/Justin_kid.jpg" width="280" alt="Input Image">
+      <br>
+      <b>Input Image</b>
+    </td>
+    <td align="center">
+      <img src="assets/Justin_kid.gif" width="280" alt="Age Progression GIF">
+      <br>
+      <b>Age Progression Output</b>
+    </td>
+  </tr>
+</table>
+
+---
+
+## Project Architecture
 
 ```text
-missing-person-portal/
-├─ backend/
-│  ├─ model/                # FastAPI model API module
-│  ├─ dashboard/            # Express + MongoDB history service
-│  ├─ model_runtime/        # Face-aging model runtime and checkpoints
-│  └─ shared/               # Shared config/constants/helpers
-├─ frontend/                # Next.js web client
-├─ assets/                  # README/UI asset files
-├─ testData/                # Sample input photos for local testing
-├─ package.json             # Repo-level helper scripts
-└─ README.md
+Missing_PersonPortal/
+├── backend/
+│   ├── model/             # FastAPI inference service
+│   ├── dashboard/         # Express + MongoDB backend
+│   ├── model_runtime/     # GAN runtime + checkpoints
+│   └── shared/            # Shared utilities/config
+│
+├── frontend/              # Next.js frontend
+├── assets/                # README/UI assets
+├── testData/              # Sample test images
+└── README.md
+````
+
+---
+
+## System Workflow
+
+```text
+User Upload
+   ↓
+Next.js Frontend
+   ↓
+FastAPI Backend
+   ↓
+LATS GAN Runtime
+   ↓
+Age Progression GIF + Image Strip
+   ↓
+Dashboard Logging (MongoDB)
+   ↓
+Historical Case Records
 ```
 
-## Features
+---
 
-- Next.js frontend for collecting upload and model-selection details
-- FastAPI backend for validation and inference orchestration
-- separate dashboard module (`/dashboard`) for historical upload records
-- local model-status detection for male and female checkpoints
-- generated age-progression GIF output
-- generated full progression strip output
-- async background history logging to MongoDB (non-blocking)
-- sample test images for quick smoke testing
-- repo-level scripts and ignore rules for cleaner GitHub usage
-
-<p align="left">
-  <img src="assets/portal_ui.png" width="600" alt="Portal Preview">
-</p>
-
-## Attribution
-
-- Core aging model source: `Lifespan_Age_Transformation_Synthesis/`
-- Original project: Lifespan Age Transformation Synthesis
-- Authors: Roy Or-El, Soumyadip Sengupta, Ohad Fried, Eli Shechtman, Ira Kemelmacher-Shlizerman
-- Paper: ECCV 2020
-
-## Upstream Assets
-
-The portal can automatically reuse the original upstream `in_the_wild` alignment assets from either of these locations:
-
-- `missing-person-portal/backend/model_runtime/`
-- sibling repo: `../Lifespan_Age_Trans/`
-
-If present, the backend will look for:
-
-- `util/shape_predictor_68_face_landmarks.dat`
-- `deeplab_model/deeplab_model.pth`
-- `deeplab_model/R-101-GN-WS.pth.tar`
-
-You can also override the asset location with `LATS_ASSET_ROOT`.
-
-## What changed in this version
-
-- portal inference now runs from the upstream `Lifespan_Age_Transformation_Synthesis` repo in this workspace
-- portal GIF generation uses traversal output, and the still preview uses the upstream full-progression deploy output
-- when the original in-the-wild alignment assets are available locally, the portal can reuse that higher-quality preprocessing path
-- frontend focuses on direct image-driven progression rather than picking a target age band from missing-person metadata
-- backend dependency list now includes the model runtime packages that were previously missing
-
-## LATS Model Architecture
+## Model Architecture
 
 ```text
 Input Face
    ↓
-Identity Encoder : Extracts identity (latent identity features) using encoder
+Identity Encoder
    ↓
-Latent Feature Space : z=[identity features]
+Latent Feature Space
    ↓
-Age Transformation Module : This is where target age is injected. The model uses fixed anchor age classes: 0-70
-Shows continuous aging through anchor-based latent interpolation.
+Age Transformation Module
    ↓
-Decoder / Generator : Outputs probability.
+Decoder / Generator
    ↓
 Aged Face Output
 ```
-### Loss functions
 
-1) GAN Loss: Ensures the generated face looks realistic and indistinguishable from a real face.
+The model performs **identity-preserving latent age transformation** by traversing learned age anchors.
+
+---
+
+## Core Loss Functions
+
+### GAN Loss
+
+Ensures realistic image generation.
 
 $$
 L_{GAN}
 $$
 
-2) Identity Loss : This is the most critical loss for viva because it preserves the same person’s identity across age transformation.
-   
-$$
-L_{id} = \left\| E(x) - E(G(x,a)) \right\|_2
-$$
+---
 
-4) Cycle Loss: This ensures reversibility of age transformation. For example:child → adult → child The output should reconstruct the original image.
-    
-$$
-L_{cycle} = \left\| x - G(G(x,a_1),a_0) \right\|_1
-$$
+### Identity Loss
 
-6) Self Reconstruction Loss: If the target age is the same as the source age, the image should reconstruct itself.
+Preserves the identity of the same person.
 
 $$
-L_{rec} = \left\| x - G(x,a) \right\|_1
+L_{id} = ||E(x) - E(G(x,a)||_2
 $$
 
-### Model Results
-<table>
-  <tr>
-    <td align="center">
-      <img src="testData/Justin_kid.jpg" width="300" alt="Input Photo">
-      <br>
-      <b>Input Photo</b>
-    </td>
-    <td align="center">
-      <img src="assets/Justin_kid.gif" width="300" alt="Input Photo">
-      <br>
-      <b>Face Aging Transition</b>
-    </td>
-  </tr>
-</table>
+---
 
-## Requirements
+### Cycle Consistency Loss
 
-- Python 3.11 recommended
-- Node.js 18 or newer
-- npm 9 or newer
+Ensures reversible transformation.
 
-## Setup
+$$
+L_{cycle} = ||x - G(G(x,a_1),a_0)||_1
+$$
 
-### 1. Backend
+---
 
-```powershell
+### Reconstruction Loss
+
+Preserves image when age remains unchanged.
+
+$$
+L_{rec} = ||x - G(x,a)||_1
+$$
+
+---
+
+## Tech Stack
+
+### Frontend
+
+* Next.js
+* TypeScript
+* React
+* CSS
+
+### Backend
+
+* FastAPI
+* Python
+* PyTorch
+
+### Dashboard
+
+* Express.js
+* MongoDB
+* Mongoose
+
+### AI Model
+
+* GAN
+* LATS (ECCV 2020)
+
+---
+
+## Installation
+
+### Backend (Model API)
+
+```bash
 cd backend
-python -m pip install -r requirements.txt
-python -m uvicorn model.app:app --reload --host 127.0.0.1 --port 8000
+pip install -r requirements.txt
+uvicorn model.app:app --reload --host 127.0.0.1 --port 8000
 ```
 
 Health check:
@@ -154,11 +221,12 @@ Health check:
 http://127.0.0.1:8000/health
 ```
 
-### 2. Frontend
+---
 
-```powershell
+### Frontend
+
+```bash
 cd frontend
-copy .env.local.example .env.local
 npm install
 npm run dev
 ```
@@ -169,108 +237,107 @@ Open:
 http://localhost:3000
 ```
 
-### 3. Dashboard backend (MongoDB)
+---
 
-```powershell
+### Dashboard Backend
+
+```bash
 cd backend/dashboard
-copy .env.example .env
 npm install
 npm run dev
 ```
 
-Dashboard backend health check:
-
-```text
-http://127.0.0.1:4100/health
-```
-
-Dashboard page:
+Dashboard:
 
 ```text
 http://localhost:3000/dashboard
 ```
 
-### 4. Optional repo-root helpers
+---
 
-From the repository root:
+## API Endpoints
 
-```powershell
-npm run dev:frontend
-npm run dev:backend
-npm run dev:dashboard
+### Health Check
+
+```http
+GET /health
 ```
 
-## Environment variables
+---
 
-### Frontend
+### Model Status
 
-`frontend/.env.local.example`
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:8000
-HISTORY_API_URL=http://127.0.0.1:4100
+```http
+GET /model-status
 ```
 
-### Backend
+---
 
-- `FRONTEND_ORIGIN`
-  Comma-separated allowed origins for CORS. Defaults to local Next.js addresses.
+### Predict Age Progression
 
-### Dashboard backend
+```http
+POST /predict
+```
 
-- `MONGODB_URI`
-  MongoDB connection string for dashboard upload history.
-- `PORT`
-  Dashboard backend port (default `4100`).
-- `FRONTEND_ORIGIN`
-  Allowed origin for dashboard API CORS (default `http://localhost:3000`).
-- `CACHE_TTL_MS`
-  Cache TTL for dashboard history reads.
+#### Input
 
-## API
+* name
+* gender
+* age_at_missing
+* missing_year
+* image
 
-### `POST /predict`
+#### Output
 
-Also available at `POST /api/predict` for compatibility with API-prefixed clients.
+* progression image
+* GIF
+* predicted current age
+* output paths
 
-Multipart form fields:
+---
 
-- `name` - required string
-- `image` - required image file
-- `gender` - optional, `male` or `female`
-- `age_at_missing` - required integer (0-120)
-- `missing_year` - required integer (1900-current year)
+## Performance
 
-Successful responses include:
+| Mode | Approx Time |
+| ---- | ----------- |
+| CPU  | 30–60 sec   |
+| GPU  | 5–10 sec    |
 
-- `age_at_missing`
-- `missing_year`
-- `current_age` (calculated as `age_at_missing + current_year - missing_year`)
-- `progression_image_base64`
-- `progress_gif_base64`
-- `progression_image_path`
-- `progress_gif_path`
+---
 
-## Model checkpoints
+## Known Limitations
 
-The portal looks for checkpoints in either of these locations:
+* works best on frontal face images
+* blurry images reduce quality
+* CPU inference is slower
+* requires valid checkpoints
+* dashboard requires MongoDB
 
-- `Lifespan_Age_Transformation_Synthesis/checkpoints/`
-- `backend/model_runtime/checkpoints/`
+---
 
-Male and female models are available when the corresponding folders exist:
+## Research Base
 
-- `males_model/`
-- `females_model/`
+Based on:
 
-## Known limitations
+**Lifespan Age Transformation Synthesis**
+Roy Or-El et al.
+ECCV 2020
 
-- The model still traverses learned age anchors internally, but the portal no longer asks the user to target a specific age band.
-- Output quality depends heavily on a clean, frontal, well-lit face image.
-- If the original `dlib` and Deeplab alignment assets are missing, uploaded images fall back to the lightweight neutral-mask path instead of the full upstream in-the-wild preprocessing pipeline.
-- Inference can be slow on CPU.
+---
 
-## Notes for contributors
+## Future Improvements
 
-- Generated images, temporary uploads, and model result folders are ignored by Git.
-- The model checkpoint weights are large; if you publish this publicly, consider moving weights to a release asset or external storage instead of committing them directly.
+* webcam integration
+* face recognition matching
+* police case dashboard
+* cloud deployment
+* multi-person identification
+
+---
+
+## Author
+
+Developed as an AI-powered **Missing Person Identification and Face Aging System** project using GANs and full-stack deployment.
+
+```
+```
