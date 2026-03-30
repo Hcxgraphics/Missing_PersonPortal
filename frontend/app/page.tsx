@@ -179,7 +179,7 @@ export default function HomePage() {
           <form className="form-panel" onSubmit={onSubmit}>
             <div className="form-intro">
               <h2>Case details</h2>
-              <p>Best results come from centered, well-lit, frontal portraits. The portal now generates directly from the uploaded image without picking a target age band.</p>
+              <p>Best results come from centered, well-lit, frontal portraits.</p>
             </div>
 
             <div className="field-grid">
