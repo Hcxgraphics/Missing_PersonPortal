@@ -1,4 +1,3 @@
-````markdown
 <p align="center">
   <img src="assets/preview_image.png" width="700" alt="Missing Person Portal Banner">
 </p>
@@ -340,4 +339,4 @@ ECCV 2020
 Developed as an AI-powered **Missing Person Identification and Face Aging System** project using GANs and full-stack deployment.
 
 ```
-```
+
