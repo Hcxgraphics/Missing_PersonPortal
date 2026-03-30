@@ -1,6 +1,9 @@
-![header](images\preview_image.png)
-# Missing Person Portal
+<p align="center">
+  <img src="images/preview_image.png" width="600" alt="Portal Preview">
+  # Missing Person Portal
+</p>
 
+# Missing Person Portal
 A full-stack missing-person age-progression demo built with Next.js and FastAPI on top of a GAN-based face-aging runtime.
 
 The core age-transformation runtime in this project is adapted from the `Lifespan_Age_Trans` repository in this workspace, based on the official Lifespan Age Transformation Synthesis project by Roy Or-El et al.
