@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
 type PredictResponse = {
@@ -172,7 +173,11 @@ export default function HomePage() {
             <h1>Missing Person Identification Portal</h1>
             <p>Upload one clear face photo and generate a direct lifespan progression from the selected model.</p>
           </div>
-          <div className="status-chip">{statusLabel}</div>
+          <div className="header-actions">
+            <Link href="/dashboard" className="header-dashboard-link">
+              Dashboard
+            </Link>
+          </div>
         </header>
 
         <div className="portal-grid">
@@ -253,9 +258,17 @@ export default function HomePage() {
 
           <section className="results-panel">
             <div className="results-head">
-              <div>
-                <h2>Progression preview</h2>
-                <p>The generated GIF stays front and center so the whole case summary fits on one screen.</p>
+              <div className="preview-header">
+                <div>
+                  <h2>Progression preview</h2>
+                  <p>The generated GIF stays front and center so the whole case summary fits on one screen.</p>
+                </div>
+                {loading && (
+                  <span className="preview-status-badge">
+                    <span className="pulse-dot"></span>
+                    Generating progression...
+                  </span>
+                )}
               </div>
             </div>
 

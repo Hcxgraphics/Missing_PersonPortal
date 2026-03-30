@@ -7,7 +7,9 @@
     "dev:frontend": "npm --prefix frontend run dev",
     "build:frontend": "npm --prefix frontend run build",
     "start:frontend": "npm --prefix frontend run start",
-    "dev:backend": "python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000 --app-dir backend",
-    "run:backend": "python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --app-dir backend"
+    "dev:backend": "python -m uvicorn model.app:app --reload --host 127.0.0.1 --port 8000 --app-dir backend",
+    "run:backend": "python -m uvicorn model.app:app --host 127.0.0.1 --port 8000 --app-dir backend",
+    "dev:dashboard": "npm --prefix backend/dashboard run dev",
+    "start:dashboard": "npm --prefix backend/dashboard run start"
   }
 }

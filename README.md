@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="images/preview_image.png" width="600" alt="header">
+  <img src="assets/preview_image.png" width="600" alt="header">
 </p>
 
 # Missing Person Portal
@@ -17,10 +17,12 @@ The app accepts a face photo plus model selection metadata, runs the upstream Li
 ```text
 missing-person-portal/
 ├─ backend/
-│  ├─ app/                  # FastAPI application
+│  ├─ model/                # FastAPI model API module
+│  ├─ dashboard/            # Express + MongoDB history service
 │  ├─ model_runtime/        # Face-aging model runtime and checkpoints
-│  └─ requirements.txt
+│  └─ shared/               # Shared config/constants/helpers
 ├─ frontend/                # Next.js web client
+├─ assets/                  # README/UI asset files
 ├─ testData/                # Sample input photos for local testing
 ├─ package.json             # Repo-level helper scripts
 └─ README.md
@@ -30,14 +32,16 @@ missing-person-portal/
 
 - Next.js frontend for collecting upload and model-selection details
 - FastAPI backend for validation and inference orchestration
+- separate dashboard module (`/dashboard`) for historical upload records
 - local model-status detection for male and female checkpoints
 - generated age-progression GIF output
 - generated full progression strip output
+- async background history logging to MongoDB (non-blocking)
 - sample test images for quick smoke testing
 - repo-level scripts and ignore rules for cleaner GitHub usage
 
 <p align="left">
-  <img src="images/portal_ui.png" width="600" alt="Portal Preview">
+  <img src="assets/portal_ui.png" width="600" alt="Portal Preview">
 </p>
 
 ## Attribution
@@ -121,7 +125,7 @@ $$
       <b>Input Photo</b>
     </td>
     <td align="center">
-      <img src="images/Justin_kid.gif" width="300" alt="Input Photo">
+      <img src="assets/Justin_kid.gif" width="300" alt="Input Photo">
       <br>
       <b>Face Aging Transition</b>
     </td>
@@ -141,7 +145,7 @@ $$
 ```powershell
 cd backend
 python -m pip install -r requirements.txt
-python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+python -m uvicorn model.app:app --reload --host 127.0.0.1 --port 8000
 ```
 
 Health check:
@@ -165,13 +169,35 @@ Open:
 http://localhost:3000
 ```
 
-### 3. Optional repo-root helpers
+### 3. Dashboard backend (MongoDB)
+
+```powershell
+cd backend/dashboard
+copy .env.example .env
+npm install
+npm run dev
+```
+
+Dashboard backend health check:
+
+```text
+http://127.0.0.1:4100/health
+```
+
+Dashboard page:
+
+```text
+http://localhost:3000/dashboard
+```
+
+### 4. Optional repo-root helpers
 
 From the repository root:
 
 ```powershell
 npm run dev:frontend
 npm run dev:backend
+npm run dev:dashboard
 ```
 
 ## Environment variables
@@ -182,12 +208,24 @@ npm run dev:backend
 
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:8000
+HISTORY_API_URL=http://127.0.0.1:4100
 ```
 
 ### Backend
 
 - `FRONTEND_ORIGIN`
   Comma-separated allowed origins for CORS. Defaults to local Next.js addresses.
+
+### Dashboard backend
+
+- `MONGODB_URI`
+  MongoDB connection string for dashboard upload history.
+- `PORT`
+  Dashboard backend port (default `4100`).
+- `FRONTEND_ORIGIN`
+  Allowed origin for dashboard API CORS (default `http://localhost:3000`).
+- `CACHE_TTL_MS`
+  Cache TTL for dashboard history reads.
 
 ## API
 
