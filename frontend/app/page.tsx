@@ -261,7 +261,7 @@ export default function HomePage() {
               <div className="preview-header">
                 <div>
                   <h2>Progression preview</h2>
-                  <p>The generated GIF stays front and center so the whole case summary fits on one screen.</p>
+                  <p>The generated GIF stays front and center </p>
                 </div>
                 {loading && (
                   <span className="preview-status-badge">

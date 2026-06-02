@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const maxDuration = 300; // 5 minutes (for long-running CPU inferences)
+
 const rawBackendBase =
   process.env.BACKEND_API_URL || process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 const backendBase = rawBackendBase.replace(/\/+$/, "").replace(/\/api$/, "");

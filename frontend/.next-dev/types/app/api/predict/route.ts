@@ -1,4 +1,4 @@
-// File: D:\FaceGANs\Missing_PersonPortal\frontend\app\api\predict\route.ts
+// File: D:\projects\FaceGANs\Missing_PersonPortal\frontend\app\api\predict\route.ts
 import * as entry from '../../../../../app/api/predict/route.js'
 import type { NextRequest } from 'next/server.js'
 

@@ -5,6 +5,7 @@ import hashlib
 import importlib.util
 import io
 import os
+from pyexpat import model
 import shutil
 import subprocess
 import sys
@@ -17,10 +18,12 @@ import cv2
 import torch
 from PIL import Image
 
+from Missing_PersonPortal.backend.model.models.Lifespan_Age_Transformation_Synthesis.models import models
+
 
 CLASS_ORDER = ["0-2", "3-6", "7-9", "15-19", "30-39", "50-69"]
 UPLOAD_SOURCE_CLASS = "30-39"
-TRAVERSE_INTERP_STEP = 0.05
+TRAVERSE_INTERP_STEP = 0.1
 
 
 @dataclass
@@ -39,7 +42,15 @@ class ModelInferenceService:
 
         self.backend_root = backend_root
         self.workspace_root = workspace_root
-        self.model_root = workspace_root / "Lifespan_Age_Transformation_Synthesis"
+        
+        # In hosted environments (e.g. Render), the sibling folder doesn't exist.
+        # Fall back to the committed self-contained model_runtime folder.
+        sibling_model_root = workspace_root / models/"Lifespan_Age_Transformation_Synthesis"
+        if sibling_model_root.exists():
+            self.model_root = sibling_model_root
+        else:
+            self.model_root = backend_root / "model_runtime"
+
         self.portal_checkpoint_root = backend_root / "model_runtime" / "checkpoints"
         self.generated_dir = backend_root / "model" / "static" / "generated"
         self.uploads_dir = backend_root / "model" / "uploads"
